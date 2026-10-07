@@ -1,0 +1,7 @@
+displayName: Host Rewrite
+type: middleware
+import: github.com/kristiankubik/traefik-host-rewrite
+summary: Rewrites request hostnames from one domain suffix to another.
+testData:
+  source: example.com
+  target: example.internal
