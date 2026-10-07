@@ -5,3 +5,4 @@ summary: Rewrites request hostnames from one domain suffix to another.
 testData:
   source: example.com
   target: example.internal
+  debug: true

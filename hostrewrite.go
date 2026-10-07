@@ -12,6 +12,7 @@ import (
 type Config struct {
 	Source string `json:"source,omitempty"`
 	Target string `json:"target,omitempty"`
+	Debug  bool   `json:"debug,omitempty"`
 }
 
 // CreateConfig creates the default plugin configuration.
@@ -24,6 +25,7 @@ type HostRewrite struct {
 	next   http.Handler
 	source string
 	target string
+	debug  bool
 }
 
 // New creates a new HostRewrite middleware.
@@ -52,10 +54,12 @@ func New(
 		next:   next,
 		source: source,
 		target: target,
+		debug:  config.Debug,
 	}, nil
 }
 
 func (m *HostRewrite) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
+	original := req.Host
 	host := stripPort(req.Host)
 	normalizedHost := strings.ToLower(strings.TrimSuffix(host, "."))
 
@@ -66,6 +70,16 @@ func (m *HostRewrite) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 	case strings.HasSuffix(normalizedHost, "."+m.source):
 		prefix := strings.TrimSuffix(normalizedHost, "."+m.source)
 		req.Host = prefix + "." + m.target
+	}
+
+	if m.debug && original != req.Host {
+		fmt.Printf(
+			"hostrewrite: source=%q target=%q host=%q -> %q\n",
+			m.source,
+			m.target,
+			original,
+			req.Host,
+		)
 	}
 
 	m.next.ServeHTTP(rw, req)

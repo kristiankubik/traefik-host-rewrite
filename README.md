@@ -10,4 +10,5 @@ http:
                 hostrewrite:
                     source: oni.example.com
                     target: oni.internal
+                    debug: true|false (optional)
 ```
