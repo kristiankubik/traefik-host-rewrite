@@ -2,13 +2,13 @@
 
 A Traefik middleware plugin for rewriting the HTTP request `Host` header.
 
-It supports replacing either an exact hostname or a DNS suffix while preserving any preceding subdomains.
+It supports replacing either an exact hostname or a DNS suffix while preserving any preceding subdomains. Hostname matching is **case-insensitive**.
 
 The middleware modifies only the HTTP request `Host` header. It does **not** modify DNS resolution, TLS SNI, or the request URL path.
 
 ## Installation
 
-Add the plugin to the static Traefik configuration (traefik.yml):
+Add the plugin to the static Traefik configuration (`traefik.yml`):
 
 ```yaml
 experimental:
@@ -73,7 +73,7 @@ http:
 
 ### `suffix`
 
-Replaces the matching DNS suffix while preserving preceding subdomains.
+The Default mode, replaces the matching DNS suffix while preserving preceding subdomains.
 
 ```text
 source: example.com
